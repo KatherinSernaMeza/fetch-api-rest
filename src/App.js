@@ -1,23 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react";
+import "./App.css";
+// import "./styles.css";
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [imageUrl, setImageUrl] = useState(null);
+
+  useEffect(() => {
+    fetch("https://dog.ceo/api/breeds/image/random")
+      .then((response) => response.json())
+      .then((dog) => {
+        setImageUrl(dog.message);
+        setIsLoading(false);
+      });
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="App">
+        <h1>Cargando...</h1>
+      </div>
+    );
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <img src={imageUrl} alt="Imagen de perrito aleatoria" />
+      <button>
+        {/* ⬅️ nuevo */}
+        ¡Otro!{" "}
+        <span role="img" aria-label="corazón">
+          ❤️
+        </span>
+      </button>
     </div>
   );
 }
